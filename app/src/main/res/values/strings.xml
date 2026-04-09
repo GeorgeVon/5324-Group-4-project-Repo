@@ -1,6 +1,21 @@
 <resources>
+    <!--Start Page -->
     <string name="app_name">Personal Assistant</string>
     <string name="landing_title">Welcome to Your Assistant</string>
     <string name="landing_subtitle">Your daily tasks, organized and simplified.</string>
     <string name="get_started">Get Started</string>
+    <!--Login Page-->
+    <string name="main_title">Personal Assistant Login</string>
+    <string name="login_button">Login</string>
+    <string name="create_account">Register</string>
+    <string name="forgot_button">Forgot Username/Password</string>
+    <!--Home Page-->
+    <string name="home_page_title">HOME PAGE</string>
+    <!--Register Page -->
+    <string name="register_page_title">Personal Assistant Registration</string>
+    <string name="register_page_subtitle">Create an Account to begin</string>
+    <string name="create_account_button">create account</string>
+    <string name="back_to_login">back to login</string>
+
+    <string name="back_to_main">Back to Main Page</string>
 </resources>
