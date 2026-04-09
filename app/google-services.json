@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1067756424362",
+    "project_id": "group4project-cfb1c",
+    "storage_bucket": "group4project-cfb1c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067756424362:android:a53a9b16dfbfb6ea8994d3",
+        "android_client_info": {
+          "package_name": "com.Group4.personalAssistant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSUAHjzSIY1pu8CK7r2U5cLs4eCR_89Vw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

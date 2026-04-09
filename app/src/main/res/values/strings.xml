@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Personal Assistant</string>
+    <string name="landing_title">Welcome to Your Assistant</string>
+    <string name="landing_subtitle">Your daily tasks, organized and simplified.</string>
+    <string name="get_started">Get Started</string>
+</resources>
