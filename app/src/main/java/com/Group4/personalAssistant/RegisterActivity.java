@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -68,10 +70,18 @@ public class RegisterActivity extends AppCompatActivity {
         {
             errorMessage += "Phone number must be at least 10 digits\n";
         }
-
+        if (!errorMessage.isEmpty()) {
+            showPopup(errorMessage);
+        } else
+        {
+            saveToFirebase(user, pass, mail, ph);
+        }
     }
+
+
     // Password validation
-    private boolean isValidPassword(String password) {
+    private boolean isValidPassword(String password)
+    {
         if (password.length() < 8) return false;
 
         boolean hasUpper = false, hasLower = false, hasSpecial = false;
@@ -89,23 +99,49 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void saveToFirebase(String user, String pass, String mail, String ph) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("username", user);
-        map.put("email", mail);
-        map.put("phone", ph);
+        mAuth.createUserWithEmailAndPassword(mail, pass)
+                .addOnSuccessListener(authResult -> {
 
-        db.collection("Users")
-                .add(map)
-                .addOnSuccessListener(documentReference ->
-                        Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show()
-                )
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    if (firebaseUser != null) {
+                        firebaseUser.sendEmailVerification()
+                                .addOnSuccessListener(unused ->
+                                        Toast.makeText(this,
+                                                "Verification email sent to " + mail,
+                                                Toast.LENGTH_LONG).show()
+                                )
+                                .addOnFailureListener(e ->
+                                        Toast.makeText(this,
+                                                "Failed to send verification: " + e.getMessage(),
+                                                Toast.LENGTH_SHORT).show()
+                                );
+                    }
+
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("username", user);
+                    map.put("email", mail);
+                    map.put("phone", ph);
+
+                    db.collection("Users")
+                            .add(map)
+                            .addOnSuccessListener(documentReference ->
+                                    Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show()
+                            )
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            );
+                })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                        showPopup("Authentication Error: " + e.getMessage())
                 );
     }
-// pop-up for any fields populated incorrectly
-    private void showPopup(String message) {
+
+
+    // pop-up for any fields populated incorrectly
+    private void showPopup(String message)
+                    {
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Validation Error")
                 .setMessage(message)
