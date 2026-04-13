@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LoginActivity extends AppCompatActivity {
 
     // VARIABLE DEFINITIONS
-    //EditText etUsername, etPassword; //user input for these text fields
+    EditText etUsername, etPassword; //user input for these text fields
     Button btnLogin, btnRegister; //current buttons on Login page
 
     @Override
@@ -21,9 +21,11 @@ public class LoginActivity extends AppCompatActivity {
 
         //BUTTON DEFINITIONS
         btnRegister = findViewById(R.id.btnRegister); //register button
-
+        btnLogin = findViewById(R.id.btnLogin); //login button
 
         //LOGIN FUNCTIONS
+        String user = etUsername.getText().toString().trim();
+        String pass = etPassword.getText().toString().trim();
 
 
         //REGISTER FUNCTIONS
