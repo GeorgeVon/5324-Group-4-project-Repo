@@ -16,6 +16,10 @@
     <string name="register_page_subtitle">Create an Account to begin</string>
     <string name="create_account_button">create account</string>
     <string name="back_to_login">back to login</string>
+    <string name="username">Username</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="phone_number">phone number</string>
 
     <string name="back_to_main">Back to Main Page</string>
 </resources>
