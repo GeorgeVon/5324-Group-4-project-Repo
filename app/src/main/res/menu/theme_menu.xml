@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/theme_default"
+        android:title="Default (Green)" />
+    <item
+        android:id="@+id/theme_dark"
+        android:title="Dark Mode" />
+    <item
+        android:id="@+id/theme_midnight"
+        android:title="Midnight Mode" />
+    <item
+        android:id="@+id/theme_colorblind"
+        android:title="Color-Blind Friendly" />
+</menu>
