@@ -1,15 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base theme (Light/Default) -->
     <style name="Theme.Group4" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary_green</item>
         <item name="colorPrimaryVariant">@color/primary_dark_green</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/primary_light_green</item>
         <item name="colorSecondaryVariant">@color/primary_green</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="customBackgroundColor">@color/white</item>
+        <item name="customTextColor">@color/black</item>
+        <item name="customSecondaryTextColor">@color/primary_dark_green</item>
+    </style>
+
+    <!-- Dark Mode -->
+    <style name="Theme.Group4.Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorPrimaryVariant">@color/dark_primary_variant</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/dark_primary</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+
+        <item name="customBackgroundColor">@color/dark_background</item>
+        <item name="customTextColor">@color/white</item>
+        <item name="customSecondaryTextColor">@color/dark_primary</item>
+    </style>
+
+    <!-- Midnight Mode (Alternate Dark) -->
+    <style name="Theme.Group4.Midnight" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">#1A237E</item> <!-- Deep Indigo -->
+        <item name="colorPrimaryVariant">#000051</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:statusBarColor">#000051</item>
+        <item name="android:windowBackground">#000000</item>
+
+        <item name="customBackgroundColor">#000000</item>
+        <item name="customTextColor">@color/white</item>
+        <item name="customSecondaryTextColor">#3F51B5</item>
+    </style>
+
+    <!-- Color Blind Friendly -->
+    <style name="Theme.Group4.ColorBlind" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/cb_primary</item>
+        <item name="colorPrimaryVariant">#004974</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/cb_secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowBackground">@color/cb_background</item>
+
+        <item name="customBackgroundColor">@color/cb_background</item>
+        <item name="customTextColor">@color/black</item>
+        <item name="customSecondaryTextColor">@color/cb_primary</item>
     </style>
 </resources>

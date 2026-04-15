@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Standard Theme -->
     <color name="primary_green">#4CAF50</color>
     <color name="primary_dark_green">#388E3C</color>
     <color name="primary_light_green">#C8E6C9</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="text_grey">#757575</color>
+
+    <!-- Dark Mode Theme -->
+    <color name="dark_background">#121212</color>
+    <color name="dark_surface">#1E1E1E</color>
+    <color name="dark_primary">#BB86FC</color>
+    <color name="dark_primary_variant">#3700B3</color>
+    <color name="dark_on_surface">#FFFFFF</color>
+
+    <!-- Color Blind Friendly (Deuteranopia/Protanopia) -->
+    <color name="cb_primary">#0072B2</color> <!-- Strong Blue -->
+    <color name="cb_secondary">#D55E00</color> <!-- Vermillion -->
+    <color name="cb_accent">#F0E442</color> <!-- Yellow -->
+    <color name="cb_background">#FDFDFD</color>
 </resources>

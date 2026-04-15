@@ -4,8 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/customBackgroundColor"
     tools:context=".MainActivity">
+
+    <ImageButton
+        android:id="@+id/btnThemes"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Theme Settings"
+        android:onClick="showThemeMenu"
+        android:src="@android:drawable/ic_menu_preferences"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/customSecondaryTextColor" />
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -17,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/primary_green" />
+        app:tint="?attr/colorPrimary" />
 
     <TextView
         android:id="@+id/tvTitle"
@@ -25,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/landing_title"
-        android:textColor="@color/primary_dark_green"
+        android:textColor="?attr/customSecondaryTextColor"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +55,7 @@
         android:layout_marginEnd="32dp"
         android:gravity="center"
         android:text="@string/landing_subtitle"
-        android:textColor="@color/text_grey"
+        android:textColor="?attr/customTextColor"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +73,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:backgroundTint="@color/primary_green"
+        app:backgroundTint="?attr/colorPrimary"
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
