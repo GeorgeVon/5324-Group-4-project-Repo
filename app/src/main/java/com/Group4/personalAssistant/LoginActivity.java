@@ -20,18 +20,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //BUTTON DEFINITIONS
+        btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister); //register button
 
-
-        //LOGIN FUNCTIONS
-
+        btnLogin.setOnClickListener(v -> {
+            Intent homeIntent = new Intent(LoginActivity.this, HomePageActivity.class);
+            startActivity(homeIntent);
+        });
 
         //REGISTER FUNCTIONS
         btnRegister.setOnClickListener(v -> {
             Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(registerIntent);
         }); //send user to register page
-
-
     }
 }

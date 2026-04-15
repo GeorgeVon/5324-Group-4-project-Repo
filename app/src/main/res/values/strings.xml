@@ -11,6 +11,13 @@
     <string name="forgot_button">Forgot Username/Password</string>
     <!--Home Page-->
     <string name="home_page_title">HOME PAGE</string>
+    <string name="home_page_subtitle">Enter a task below and have it read aloud.</string>
+    <string name="home_page_task_hint">Task description</string>
+    <string name="speak_task_button">Read Task</string>
+    <string name="stop_speech_button">Stop Speech</string>
+    <string name="home_page_default_task">Today's task is to review your schedule and plan the next priority.</string>
+    <string name="home_page_tts_not_ready">Text-to-speech is not ready yet.</string>
+    <string name="login_button">Login</string>
     <!--Register Page -->
     <string name="register_page_title">Personal Assistant Registration</string>
     <string name="register_page_subtitle">Create an Account to begin</string>
