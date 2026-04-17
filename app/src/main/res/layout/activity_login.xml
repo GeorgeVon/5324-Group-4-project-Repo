@@ -51,7 +51,6 @@
         android:text="@string/main_title"
         android:textSize="34dp" />
 
-<<<<<<< HEAD
     <!-- Username -->
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -94,24 +93,14 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
         android:layout_width="300dp"
-=======
-    <!-- Login Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
->>>>>>> Marissa/project-branch
         android:layout_height="wrap_content"
         android:text="@string/login_button"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"
-<<<<<<< HEAD
         android:layout_marginTop="20dp"
         android:backgroundTint="?attr/colorPrimary" />
-=======
-        android:backgroundTint="@color/primary_green" />
 
->>>>>>> Marissa/project-branch
     <!-- Register Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
