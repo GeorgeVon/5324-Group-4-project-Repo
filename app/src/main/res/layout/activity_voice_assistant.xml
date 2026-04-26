@@ -52,6 +52,17 @@
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddDetectedTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Add Task to Calendar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/btnMic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnMic"
         android:layout_width="wrap_content"
@@ -65,6 +76,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:tint="@color/white" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/btnMic"
+        app:layout_constraintEnd_toEndOf="@id/btnMic"
+        app:layout_constraintStart_toStartOf="@id/btnMic"
+        app:layout_constraintTop_toTopOf="@id/btnMic" />
 
     <TextView
         android:layout_width="wrap_content"
