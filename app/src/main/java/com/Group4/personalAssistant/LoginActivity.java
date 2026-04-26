@@ -14,7 +14,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // VARIABLE DEFINITIONS
     EditText etUsername, etPassword; //user input for these text fields
-    Button btnLogin, btnRegister; //current buttons on Login page
+    Button btnLogin, btnRegister, btnForgot; //current buttons on Login page
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.password);
         btnRegister = findViewById(R.id.btnRegister); //register button
         btnLogin = findViewById(R.id.btnLogin); //login button
+        btnForgot = findViewById(R.id.btnForgot); //forgot button
+
 
         btnLogin.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
@@ -45,6 +47,12 @@ public class LoginActivity extends AppCompatActivity {
             Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(registerIntent);
         }); //send user to register page
+
+        //FORGOT FUNCTIONS
+        // FORGOT USERNAME/PASSWORD
+        btnForgot.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, RecoveryActivity.class));
+        });
     }
 
     public void showThemeMenu(View v) {

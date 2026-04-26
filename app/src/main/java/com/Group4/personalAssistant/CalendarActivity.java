@@ -30,7 +30,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class HomePageActivity extends AppCompatActivity {
+
+public class CalendarActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "schedule_prefs";
     private static final String SCHEDULE_KEY = "schedule_entries";
 
@@ -73,7 +74,7 @@ public class HomePageActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomePageActivity.this, VoiceAssistantActivity.class);
+                Intent intent = new Intent(CalendarActivity.this, VoiceAssistantActivity.class);
                 startActivity(intent);
             }
         });
@@ -83,7 +84,7 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
+                Intent intent = new Intent(CalendarActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
@@ -97,8 +98,8 @@ public class HomePageActivity extends AppCompatActivity {
 //        editTaskText = findViewById(R.id.editTaskText);
 //        btnSpeakTask = findViewById(R.id.btnSpeakTask);
 //        btnStopSpeech = findViewById(R.id.btnStopSpeech);
-//        btnAddEvent = findViewById(R.id.btnAddEvent);
-//        btnAddTask = findViewById(R.id.btnAddTask);
+        btnAddEvent = findViewById(R.id.btnAddEvent);
+        btnAddTask = findViewById(R.id.btnAddTask);
 //        tvSelectedDate = findViewById(R.id.tvSelectedDate);
 //        tvScheduleEmpty = findViewById(R.id.tvScheduleEmpty);
 //        scheduleContainer = findViewById(R.id.scheduleContainer);
@@ -139,7 +140,7 @@ public class HomePageActivity extends AppCompatActivity {
         btnStopSpeech.setOnClickListener(v -> ttsManager.stop());
         // End of Marissa's Calendar/Schedule elements
 
-        // Kim - Bottom Navigation elements
+        // Bottom Navigation elements
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         // Set Calendar as the default selected item
         bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
@@ -363,13 +364,13 @@ public class HomePageActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.theme_default) {
-                    ThemeHelper.setTheme(HomePageActivity.this, R.style.Theme_Group4);
+                    ThemeHelper.setTheme(CalendarActivity.this, R.style.Theme_Group4);
                 } else if (itemId == R.id.theme_dark) {
-                    ThemeHelper.setTheme(HomePageActivity.this, R.style.Theme_Group4_Dark);
+                    ThemeHelper.setTheme(CalendarActivity.this, R.style.Theme_Group4_Dark);
                 } else if (itemId == R.id.theme_midnight) {
-                    ThemeHelper.setTheme(HomePageActivity.this, R.style.Theme_Group4_Midnight);
+                    ThemeHelper.setTheme(CalendarActivity.this, R.style.Theme_Group4_Midnight);
                 } else if (itemId == R.id.theme_colorblind) {
-                    ThemeHelper.setTheme(HomePageActivity.this, R.style.Theme_Group4_ColorBlind);
+                    ThemeHelper.setTheme(CalendarActivity.this, R.style.Theme_Group4_ColorBlind);
                 }
                 return true;
             }
