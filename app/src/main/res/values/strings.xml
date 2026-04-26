@@ -46,6 +46,12 @@
     <string name="password">password</string>
     <string name="email">email</string>
     <string name="phone_number">phone number</string>
+    <!--Recovery Page -->
+    <string name="recovery_page_title">User Account Recovery</string>
+    <string name="reset_username_button">Reset Username</string>
+    <string name="reset_password_button">Reset Password</string>
+    <string name="forgot">Forgot Username/Password</string>
+
 
     <string name="back_to_main">Back to Main Page</string>
     <string name="user_label">You: %1$s</string>

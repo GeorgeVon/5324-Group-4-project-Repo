@@ -8,6 +8,18 @@
     android:padding="24dp"
     tools:context=".VoiceAssistantActivity">
 
+    <ImageButton
+        android:id="@+id/btnBackToHome"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Back to Home"
+        android:src="@android:drawable/ic_menu_revert"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/customSecondaryTextColor"
+        tools:ignore="HardcodedText,ImageContrastCheck" />
+
     <TextView
         android:id="@+id/tvVoiceTitle"
         android:layout_width="wrap_content"

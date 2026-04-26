@@ -22,7 +22,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class VoiceAssistantActivity extends AppCompatActivity {
@@ -49,6 +52,7 @@ public class VoiceAssistantActivity extends AppCompatActivity {
         btnMic = findViewById(R.id.btnMic);
         progressBar = findViewById(R.id.progressBar);
         btnAddDetectedTask = findViewById(R.id.btnAddDetectedTask);
+        findViewById(R.id.btnBackToHome).setOnClickListener(v -> finish());
 
         ttsManager = new TtsManager(this);
         ttsManager.initialize();
@@ -178,9 +182,22 @@ public class VoiceAssistantActivity extends AppCompatActivity {
                                     if (json.has("task")) {
                                         JSONObject taskJson = json.getJSONObject("task");
                                         String title = taskJson.getString("title");
-                                        String date = taskJson.getString("date");
-                                        detectedTask = new Task(title, date);
-                                        btnAddDetectedTask.setVisibility(View.VISIBLE);
+                                        String dateString = taskJson.getString("date");
+
+                                        // Convert Gemini's date format (YYYY-MM-DD) to app format (EEE, MMM d, yyyy)
+                                        SimpleDateFormat geminiFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                        SimpleDateFormat appFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault());
+                                        Calendar dueDate = Calendar.getInstance();
+                                        try {
+                                            dueDate.setTime(geminiFormat.parse(dateString));
+                                            String formattedDate = appFormat.format(dueDate.getTime());
+                                            detectedTask = new Task(title, formattedDate);
+                                            btnAddDetectedTask.setVisibility(View.VISIBLE);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                            detectedTask = new Task(title, dateString);
+                                            btnAddDetectedTask.setVisibility(View.VISIBLE);
+                                        }
                                     }
 
                                     if (cleanResponse.isEmpty()) {

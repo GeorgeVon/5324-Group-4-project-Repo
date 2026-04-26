@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText username, password, email, phone, address;
+    EditText username, password, email, phone;
     Button btnBack, btnDone;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
