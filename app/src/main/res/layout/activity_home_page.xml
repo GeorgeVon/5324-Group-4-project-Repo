@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?attr/customBackgroundColor"
+    tools:context=".HomePageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,38 +13,94 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <!-- Top Header with Theme Cog and Greeting -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btnThemes"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Theme Settings"
+                android:onClick="showThemeMenu"
+                android:src="@android:drawable/ic_menu_preferences"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/customSecondaryTextColor" />
+
+            <TextView
+                android:id="@+id/tvGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Hello, User"
+                android:textColor="?attr/customTextColor"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:textColor="?attr/customSecondaryTextColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnThemes" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Voice Assistant Entry -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNewQuery"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:text="Open Voice Assistant"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_btn_speak_now"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="?attr/colorPrimary" />
+
+        <!-- Marissa's Calendar Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="@string/home_page_title"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/primary_dark_green" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/home_page_subtitle"
-            android:textSize="16sp"
-            android:textColor="@color/text_grey" />
+            android:textColor="?attr/customSecondaryTextColor" />
 
         <CalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:weekSeparatorLineColor="@color/primary_green"
-            android:selectedWeekBackgroundColor="@color/primary_green" />
+            android:layout_marginTop="12dp"
+            android:theme="?attr/customBackgroundColor" />
 
         <TextView
             android:id="@+id/tvSelectedDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="@string/selected_date_label"
             android:textSize="16sp"
-            android:textColor="@color/primary_dark_green" />
+            android:textColor="?attr/customSecondaryTextColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,7 +118,7 @@
                 android:text="@string/add_event_button"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/primary_green" />
+                app:backgroundTint="?attr/colorPrimary" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddTask"
@@ -71,7 +129,7 @@
                 android:text="@string/add_task_button"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/primary_dark_green" />
+                app:backgroundTint="?attr/colorPrimaryVariant" />
         </LinearLayout>
 
         <TextView
@@ -81,15 +139,16 @@
             android:text="@string/schedule_header"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/primary_dark_green" />
+            android:textColor="?attr/customSecondaryTextColor" />
 
         <TextView
             android:id="@+id/tvScheduleEmpty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="@string/no_schedule_items"
-            android:textColor="@color/text_grey"
+            android:textColor="?attr/customTextColor"
+            android:alpha="0.7"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -103,8 +162,9 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="24dp"
-            android:background="@color/primary_green" />
+            android:background="?attr/colorPrimary" />
 
+        <!-- Marissa's TTS Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,7 +172,7 @@
             android:text="@string/speak_task_section_title"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/primary_dark_green" />
+            android:textColor="?attr/customSecondaryTextColor" />
 
         <EditText
             android:id="@+id/editTaskText"
@@ -123,6 +183,8 @@
             android:inputType="textMultiLine"
             android:minLines="3"
             android:padding="12dp"
+            android:textColor="?attr/customTextColor"
+            android:textColorHint="?attr/customTextColor"
             android:background="?android:attr/editTextBackground" />
 
         <com.google.android.material.button.MaterialButton
@@ -133,7 +195,7 @@
             android:text="@string/speak_task_button"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            app:backgroundTint="@color/primary_green" />
+            app:backgroundTint="?attr/colorPrimary" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnStopSpeech"
@@ -143,6 +205,6 @@
             android:text="@string/stop_speech_button"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            app:backgroundTint="@color/primary_dark_green" />
+            app:backgroundTint="?attr/colorPrimaryVariant" />
     </LinearLayout>
 </ScrollView>

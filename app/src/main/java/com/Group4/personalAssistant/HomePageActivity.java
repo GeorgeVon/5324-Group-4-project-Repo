@@ -3,18 +3,23 @@ package com.Group4.personalAssistant;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,11 +47,46 @@ public class HomePageActivity extends AppCompatActivity {
     private ArrayList<String> scheduleEntries;
     private SharedPreferences preferences;
 
+    private TextView tvGreeting;
+    private Button btnNewQuery, btnLogout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        // Dashboard/Voice Assistant elements
+        tvGreeting = findViewById(R.id.tvGreeting);
+        btnNewQuery = findViewById(R.id.btnNewQuery);
+        btnLogout = findViewById(R.id.btnLogout);
+
+        String name = getIntent().getStringExtra("USER_NAME");
+        if (name == null || name.isEmpty()) {
+            name = "User";
+        }
+        tvGreeting.setText("Hello, " + name);
+
+        btnNewQuery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePageActivity.this, VoiceAssistantActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        // Marissa's Calendar/Schedule elements
         ttsManager = new TtsManager(this);
         ttsManager.initialize();
 
@@ -286,5 +326,27 @@ public class HomePageActivity extends AppCompatActivity {
             ttsManager.shutdown();
         }
         super.onDestroy();
+    }
+
+    public void showThemeMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.getMenuInflater().inflate(R.menu.theme_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.theme_default) {
+                    ThemeHelper.setTheme(HomePageActivity.this, R.style.Theme_Group4);
+                } else if (itemId == R.id.theme_dark) {
+                    ThemeHelper.setTheme(HomePageActivity.this, R.style.Theme_Group4_Dark);
+                } else if (itemId == R.id.theme_midnight) {
+                    ThemeHelper.setTheme(HomePageActivity.this, R.style.Theme_Group4_Midnight);
+                } else if (itemId == R.id.theme_colorblind) {
+                    ThemeHelper.setTheme(HomePageActivity.this, R.style.Theme_Group4_ColorBlind);
+                }
+                return true;
+            }
+        });
+        popup.show();
     }
 }
