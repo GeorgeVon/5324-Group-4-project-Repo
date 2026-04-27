@@ -104,7 +104,7 @@
     <!-- Register Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="@string/create_account"
         android:textAllCaps="false"
@@ -112,5 +112,16 @@
         android:textSize="18sp"
         android:layout_marginTop="5dp"
         android:backgroundTint="?attr/colorPrimary" />
+    <!-- Forgot Button -->
+    <Button
+        android:id="@+id/btnForgot"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/forgot_button"
+        android:textAllCaps="false"
+        android:layout_marginTop="18sp"
+
+        android:backgroundTint="@color/primary_dark_green" />
 
 </LinearLayout>

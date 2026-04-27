@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="customBackgroundColor" format="color" />
-    <attr name="customTextColor" format="color" />
-    <attr name="customSecondaryTextColor" format="color" />
+    <attr name="customBackgroundColor" format="color|reference" />
+    <attr name="customTextColor" format="color|reference" />
+    <attr name="customSecondaryTextColor" format="color|reference" />
 </resources>

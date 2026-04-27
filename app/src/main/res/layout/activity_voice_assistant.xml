@@ -8,6 +8,17 @@
     android:padding="24dp"
     tools:context=".VoiceAssistantActivity">
 
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Back"
+        android:src="@android:drawable/ic_menu_revert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/customSecondaryTextColor" />
+
     <TextView
         android:id="@+id/tvVoiceTitle"
         android:layout_width="wrap_content"
