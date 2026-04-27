@@ -57,53 +57,48 @@ public class CalendarActivity extends AppCompatActivity {
     {
         ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_calendar);
 
         // Dashboard/Voice Assistant elements
         tvGreeting = findViewById(R.id.tvGreeting);
-        btnNewQuery = findViewById(R.id.btnNewQuery);
+        // btnNewQuery = findViewById(R.id.btnNewQuery); // Not in activity_calendar.xml
         btnLogout = findViewById(R.id.btnLogout);
 
         String name = getIntent().getStringExtra("USER_NAME");
         if (name == null || name.isEmpty()) {
             name = "User";
         }
-        tvGreeting.setText("Hello, " + name);
+        if (tvGreeting != null) {
+            tvGreeting.setText("Hello, " + name);
+        }
 
-        btnNewQuery.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CalendarActivity.this, VoiceAssistantActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnLogout.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(CalendarActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            }
-        });
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(CalendarActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
 
         // Marissa's Calendar/Schedule elements
         ttsManager = new TtsManager(this);
         ttsManager.initialize();
 
-//        editTaskText = findViewById(R.id.editTaskText);
-//        btnSpeakTask = findViewById(R.id.btnSpeakTask);
-//        btnStopSpeech = findViewById(R.id.btnStopSpeech);
+        editTaskText = findViewById(R.id.editTaskText);
+        btnSpeakTask = findViewById(R.id.btnSpeakTask);
+        btnStopSpeech = findViewById(R.id.btnStopSpeech);
         btnAddEvent = findViewById(R.id.btnAddEvent);
         btnAddTask = findViewById(R.id.btnAddTask);
-//        tvSelectedDate = findViewById(R.id.tvSelectedDate);
-//        tvScheduleEmpty = findViewById(R.id.tvScheduleEmpty);
-//        scheduleContainer = findViewById(R.id.scheduleContainer);
-//        calendarView = findViewById(R.id.calendarView);
+        tvSelectedDate = findViewById(R.id.tvSelectedDate);
+        tvScheduleEmpty = findViewById(R.id.tvScheduleEmpty);
+        scheduleContainer = findViewById(R.id.scheduleContainer);
+        calendarView = findViewById(R.id.calendarView);
 
         preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         scheduleEntries = new ArrayList<>();
@@ -113,58 +108,64 @@ public class CalendarActivity extends AppCompatActivity {
         loadScheduleEntries();
         updateScheduleDisplay();
 
-        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            selectedDate.set(Calendar.YEAR, year);
-            selectedDate.set(Calendar.MONTH, month);
-            selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateSelectedDateLabel();
-        });
+        if (calendarView != null) {
+            calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+                selectedDate.set(Calendar.YEAR, year);
+                selectedDate.set(Calendar.MONTH, month);
+                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateSelectedDateLabel();
+            });
+        }
 
-        btnAddEvent.setOnClickListener(v -> showAddEventDialog());
-        btnAddTask.setOnClickListener(v -> showAddTaskDialog());
+        if (btnAddEvent != null) btnAddEvent.setOnClickListener(v -> showAddEventDialog());
+        if (btnAddTask != null) btnAddTask.setOnClickListener(v -> showAddTaskDialog());
 
-        btnSpeakTask.setOnClickListener(v -> {
-            String taskText = editTaskText.getText().toString().trim();
-            if (taskText.isEmpty()) {
-                taskText = getString(R.string.home_page_default_task);
-            }
+        if (btnSpeakTask != null) {
+            btnSpeakTask.setOnClickListener(v -> {
+                String taskText = editTaskText.getText().toString().trim();
+                if (taskText.isEmpty()) {
+                    taskText = getString(R.string.home_page_default_task);
+                }
 
-            if (!ttsManager.isReady()) {
-                Toast.makeText(this, R.string.home_page_tts_not_ready, Toast.LENGTH_SHORT).show();
-                return;
-            }
+                if (!ttsManager.isReady()) {
+                    Toast.makeText(this, R.string.home_page_tts_not_ready, Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            ttsManager.speakTask(getString(R.string.home_page_title), taskText);
-        });
+                ttsManager.speakTask(getString(R.string.home_page_title), taskText);
+            });
+        }
 
-        btnStopSpeech.setOnClickListener(v -> ttsManager.stop());
-        // End of Marissa's Calendar/Schedule elements
+        if (btnStopSpeech != null) btnStopSpeech.setOnClickListener(v -> ttsManager.stop());
 
-        // Bottom Navigation elements
+        // Setup Bottom Navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        // Set Calendar as the default selected item
-        bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-
-            if (id == R.id.nav_tasks) {
-                // startActivity(new Intent(this, TasksActivity.class));
-                return true;
-            } else if (id == R.id.nav_recent) {
-                // startActivity(new Intent(this, RecentActivity.class));
-                return true;
-            } else if (id == R.id.nav_calendar) {
-                // You are already here
-                return true;
-            }
-            return false;
-        });
-
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_tasks) {
+                    startActivity(new Intent(this, TaskActivity.class));
+                    return true;
+                } else if (id == R.id.nav_calendar) {
+                    // Already here
+                    return true;
+                } else if (id == R.id.nav_voice_assistant) {
+                    startActivity(new Intent(this, VoiceAssistantActivity.class));
+                    return true;
+                } else if (id == R.id.nav_recent) {
+                    // startActivity(new Intent(this, RecentActivity.class));
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     private void updateSelectedDateLabel() {
-        tvSelectedDate.setText(getString(R.string.selected_date_label, formatDate(selectedDate)));
+        if (tvSelectedDate != null) {
+            tvSelectedDate.setText(getString(R.string.selected_date_label, formatDate(selectedDate)));
+        }
     }
 
     private void showAddEventDialog() {
@@ -293,13 +294,14 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     private void updateScheduleDisplay() {
+        if (scheduleContainer == null) return;
         scheduleContainer.removeAllViews();
         if (scheduleEntries.isEmpty()) {
-            tvScheduleEmpty.setVisibility(TextView.VISIBLE);
+            if (tvScheduleEmpty != null) tvScheduleEmpty.setVisibility(TextView.VISIBLE);
             return;
         }
 
-        tvScheduleEmpty.setVisibility(TextView.GONE);
+        if (tvScheduleEmpty != null) tvScheduleEmpty.setVisibility(TextView.GONE);
         for (String entry : scheduleEntries) {
             TextView itemView = new TextView(this);
             itemView.setText(entry);

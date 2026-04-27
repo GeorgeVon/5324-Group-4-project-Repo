@@ -1,44 +1,63 @@
 package com.Group4.personalAssistant;
 
-import static com.Group4.personalAssistant.R.*;
-
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class RecoveryActivity extends AppCompatActivity {
-    EditText username, password, email, phone;
-    Button btnBack, btnResetPassword;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private EditText emailEditText;
+    private Button btnBack, btnResetPassword;
+    private FirebaseAuth mAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recovery);
-        // VARIABLE DEFINITIONS
-        //username = findViewById(R.id.username);
-        //password = findViewById(R.id.password);
-        email = findViewById(R.id.email);
-       // phone = findViewById(R.id.phone);
 
-        //BUTTON FUNCTIONALITY
-        //done button
+        mAuth = FirebaseAuth.getInstance();
+
+        emailEditText = findViewById(R.id.email);
         btnResetPassword = findViewById(R.id.btnResetPassword);
-        btnResetPassword.setOnClickListener(v -> {
-            finish(); // closes this screen and goes back
-        });
-
-        //return to main screen button
         btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-            finish(); // closes this screen and goes back
+
+        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetPassword();
+            }
         });
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
+    private void resetPassword() {
+        String email = emailEditText.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(RecoveryActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(RecoveryActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
