@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +16,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class VoiceAssistantActivity extends AppCompatActivity {
@@ -27,7 +34,13 @@ public class VoiceAssistantActivity extends AppCompatActivity {
     private static final int PERMISSION_RECORD_AUDIO_REQUEST_CODE = 200;
     private TextView tvSpeechResult;
     private FloatingActionButton btnMic;
-    private ImageButton btnBack;
+    private ProgressBar progressBar;
+    private MaterialButton btnAddDetectedTask;
+    private TtsManager ttsManager;
+    private GeminiManager geminiManager;
+    private static final String GEMINI_API_KEY = "AIzaSyALCUPkCTJPGglqAKwKu2Twa754TagtHJM"; 
+
+    private Task detectedTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +50,14 @@ public class VoiceAssistantActivity extends AppCompatActivity {
 
         tvSpeechResult = findViewById(R.id.tvSpeechResult);
         btnMic = findViewById(R.id.btnMic);
-        btnBack = findViewById(R.id.btnBack);
+        progressBar = findViewById(R.id.progressBar);
+        btnAddDetectedTask = findViewById(R.id.btnAddDetectedTask);
+        findViewById(R.id.btnBackToHome).setOnClickListener(v -> finish());
+
+        ttsManager = new TtsManager(this);
+        ttsManager.initialize();
+
+        geminiManager = new GeminiManager();
 
         btnMic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,17 +66,41 @@ public class VoiceAssistantActivity extends AppCompatActivity {
             }
         });
 
-        if (btnBack != null) {
-            btnBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(VoiceAssistantActivity.this, HomePageActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
-                    finish();
+        btnAddDetectedTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (detectedTask != null) {
+                    saveTaskToPrefs(detectedTask);
+                    Toast.makeText(VoiceAssistantActivity.this, "Task added to calendar!", Toast.LENGTH_SHORT).show();
+                    btnAddDetectedTask.setVisibility(View.GONE);
                 }
-            });
+            }
+        });
+    }
+
+    private void saveTaskToPrefs(Task task) {
+        android.content.SharedPreferences preferences = getSharedPreferences("schedule_prefs", MODE_PRIVATE);
+        String saved = preferences.getString("schedule_entries", "");
+        ArrayList<String> scheduleEntries = new ArrayList<>();
+        if (saved != null && !saved.isEmpty()) {
+            try {
+                org.json.JSONArray array = new org.json.JSONArray(saved);
+                for (int i = 0; i < array.length(); i++) {
+                    scheduleEntries.add(array.getString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+        
+        String entry = getString(R.string.task_entry_template, task.getTitle(), task.getDueDate());
+        scheduleEntries.add(entry);
+        
+        org.json.JSONArray array = new org.json.JSONArray();
+        for (String s : scheduleEntries) {
+            array.put(s);
+        }
+        preferences.edit().putString("schedule_entries", array.toString()).apply();
     }
 
     private void checkPermissionAndStartSpeech() {
@@ -100,8 +144,98 @@ public class VoiceAssistantActivity extends AppCompatActivity {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             if (result != null && !result.isEmpty()) {
                 String spokenText = result.get(0);
-                tvSpeechResult.setText(spokenText);
+                tvSpeechResult.setText(getString(R.string.user_label, spokenText));
+                
+                // Show progress bar and disable mic
+                progressBar.setVisibility(View.VISIBLE);
+                btnMic.setEnabled(false);
+                
+                // Send to Gemini
+                geminiManager.generateResponse(spokenText, new GeminiManager.GeminiResponseCallback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        runOnUiThread(() -> {
+                            progressBar.setVisibility(View.GONE);
+                            btnMic.setEnabled(true);
+                            String cleanResponse;
+                            detectedTask = null;
+
+                            // Look for JSON block
+                            if (response.contains("{") && response.contains("}")) {
+                                try {
+                                    int start = response.indexOf("{");
+                                    int end = response.lastIndexOf("}") + 1;
+                                    String jsonStr = response.substring(start, end);
+
+                                    // Extract text before the JSON block
+                                    String textBefore = response.substring(0, start).trim();
+                                    // Remove markdown code block markers if they exist
+                                    if (textBefore.endsWith("```json")) {
+                                        cleanResponse = textBefore.substring(0, textBefore.length() - 7).trim();
+                                    } else if (textBefore.endsWith("```")) {
+                                        cleanResponse = textBefore.substring(0, textBefore.length() - 3).trim();
+                                    } else {
+                                        cleanResponse = textBefore;
+                                    }
+
+                                    JSONObject json = new JSONObject(jsonStr);
+                                    if (json.has("task")) {
+                                        JSONObject taskJson = json.getJSONObject("task");
+                                        String title = taskJson.getString("title");
+                                        String dateString = taskJson.getString("date");
+
+                                        // Convert Gemini's date format (YYYY-MM-DD) to app format (EEE, MMM d, yyyy)
+                                        SimpleDateFormat geminiFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                        SimpleDateFormat appFormat = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault());
+                                        Calendar dueDate = Calendar.getInstance();
+                                        try {
+                                            dueDate.setTime(geminiFormat.parse(dateString));
+                                            String formattedDate = appFormat.format(dueDate.getTime());
+                                            detectedTask = new Task(title, formattedDate);
+                                            btnAddDetectedTask.setVisibility(View.VISIBLE);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                            detectedTask = new Task(title, dateString);
+                                            btnAddDetectedTask.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+
+                                    if (cleanResponse.isEmpty()) {
+                                        cleanResponse = "Task detected: " + detectedTask.getTitle();
+                                    }
+                                } catch (JSONException e) {
+                                    // If JSON parsing fails, keep the original response and log the error
+                                    e.printStackTrace();
+                                    cleanResponse = response; // Fallback to the full response
+                                }
+                            } else {
+                                // No JSON found, use the full response
+                                cleanResponse = response;
+                            }
+
+                            tvSpeechResult.append("\n\n" + getString(R.string.gemini_label, cleanResponse));
+                            ttsManager.speak(cleanResponse);
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        runOnUiThread(() -> {
+                            progressBar.setVisibility(View.GONE);
+                            btnMic.setEnabled(true);
+                            Toast.makeText(VoiceAssistantActivity.this, getString(R.string.gemini_error, throwable.getMessage()), Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                });
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (ttsManager != null) {
+            ttsManager.shutdown();
+        }
+        super.onDestroy();
     }
 }
