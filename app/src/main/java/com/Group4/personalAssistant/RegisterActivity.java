@@ -79,10 +79,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    // Password validation
-    private boolean isValidPassword(String password)
+    // Password validation - changed to static and package-private for testing
+    static boolean isValidPassword(String password)
     {
-        if (password.length() < 8) return false;
+        if (password == null || password.length() < 8) return false;
 
         boolean hasUpper = false, hasLower = false, hasSpecial = false;
 

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class VoiceAssistantActivity extends AppCompatActivity {
     private static final int PERMISSION_RECORD_AUDIO_REQUEST_CODE = 200;
     private TextView tvSpeechResult;
     private FloatingActionButton btnMic;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class VoiceAssistantActivity extends AppCompatActivity {
 
         tvSpeechResult = findViewById(R.id.tvSpeechResult);
         btnMic = findViewById(R.id.btnMic);
+        btnBack = findViewById(R.id.btnBack);
 
         btnMic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +45,18 @@ public class VoiceAssistantActivity extends AppCompatActivity {
                 checkPermissionAndStartSpeech();
             }
         });
+
+        if (btnBack != null) {
+            btnBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(VoiceAssistantActivity.this, HomePageActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
     }
 
     private void checkPermissionAndStartSpeech() {

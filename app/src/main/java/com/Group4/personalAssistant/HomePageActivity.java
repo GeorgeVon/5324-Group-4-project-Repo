@@ -52,8 +52,7 @@ public class HomePageActivity extends AppCompatActivity {
     private Button btnNewQuery, btnLogout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
@@ -69,8 +68,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
         tvGreeting.setText("Hello, " + name);
 
-        btnNewQuery.setOnClickListener(new View.OnClickListener()
-        {
+        btnNewQuery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomePageActivity.this, VoiceAssistantActivity.class);
@@ -78,8 +76,7 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
-        btnLogout.setOnClickListener(new View.OnClickListener()
-        {
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
@@ -94,15 +91,15 @@ public class HomePageActivity extends AppCompatActivity {
         ttsManager = new TtsManager(this);
         ttsManager.initialize();
 
-//        editTaskText = findViewById(R.id.editTaskText);
-//        btnSpeakTask = findViewById(R.id.btnSpeakTask);
-//        btnStopSpeech = findViewById(R.id.btnStopSpeech);
-//        btnAddEvent = findViewById(R.id.btnAddEvent);
-//        btnAddTask = findViewById(R.id.btnAddTask);
-//        tvSelectedDate = findViewById(R.id.tvSelectedDate);
-//        tvScheduleEmpty = findViewById(R.id.tvScheduleEmpty);
-//        scheduleContainer = findViewById(R.id.scheduleContainer);
-//        calendarView = findViewById(R.id.calendarView);
+        editTaskText = findViewById(R.id.editTaskText);
+        btnSpeakTask = findViewById(R.id.btnSpeakTask);
+        btnStopSpeech = findViewById(R.id.btnStopSpeech);
+        btnAddEvent = findViewById(R.id.btnAddEvent);
+        btnAddTask = findViewById(R.id.btnAddTask);
+        tvSelectedDate = findViewById(R.id.tvSelectedDate);
+        tvScheduleEmpty = findViewById(R.id.tvScheduleEmpty);
+        scheduleContainer = findViewById(R.id.scheduleContainer);
+        calendarView = findViewById(R.id.calendarView);
 
         preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         scheduleEntries = new ArrayList<>();
@@ -137,29 +134,27 @@ public class HomePageActivity extends AppCompatActivity {
         });
 
         btnStopSpeech.setOnClickListener(v -> ttsManager.stop());
-        // End of Marissa's Calendar/Schedule elements
 
-        // Kim - Bottom Navigation elements
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        // Set Calendar as the default selected item
-        bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-
-            if (id == R.id.nav_tasks) {
-                // startActivity(new Intent(this, TasksActivity.class));
-                return true;
-            } else if (id == R.id.nav_recent) {
-                // startActivity(new Intent(this, RecentActivity.class));
-                return true;
-            } else if (id == R.id.nav_calendar) {
-                // You are already here
-                return true;
-            }
-            return false;
-        });
-
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_recent);
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_tasks) {
+                    startActivity(new Intent(this, TaskActivity.class));
+                    return true;
+                } else if (id == R.id.nav_calendar) {
+                    startActivity(new Intent(this, CalendarActivity.class));
+                    return true;
+                } else if (id == R.id.nav_voice_assistant) {
+                    startActivity(new Intent(this, VoiceAssistantActivity.class));
+                    return true;
+                } else if (id == R.id.nav_recent) {
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     private void updateSelectedDateLabel() {

@@ -41,7 +41,7 @@
             android:exported="true" />
         <activity
             android:name=".TaskActivity"
-            android:exported="true" />
+            android:exported="true"/>
     </application>
 
 </manifest>
