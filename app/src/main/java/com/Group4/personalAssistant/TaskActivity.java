@@ -200,6 +200,8 @@ public class TaskActivity extends AppCompatActivity {
                 }
             } else {
                 taskEntries.add(0, entry);
+                // Also save to Calendar preferences for new tasks
+                saveToOtherPrefs("schedule_prefs", "schedule_entries", entry);
             }
             
             updateTaskDisplay(taskEntries);
@@ -208,6 +210,28 @@ public class TaskActivity extends AppCompatActivity {
         }));
 
         dialog.show();
+    }
+
+    private void saveToOtherPrefs(String prefsName, String key, String entry) {
+        SharedPreferences otherPrefs = getSharedPreferences(prefsName, MODE_PRIVATE);
+        String saved = otherPrefs.getString(key, "");
+        ArrayList<String> entries = new ArrayList<>();
+        if (saved != null && !saved.isEmpty()) {
+            try {
+                JSONArray array = new JSONArray(saved);
+                for (int i = 0; i < array.length(); i++) {
+                    entries.add(array.getString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        entries.add(0, entry);
+        JSONArray array = new JSONArray();
+        for (String s : entries) {
+            array.put(s);
+        }
+        otherPrefs.edit().putString(key, array.toString()).apply();
     }
 
     private void updateTaskDisplay(ArrayList<String> listToDisplay) {
