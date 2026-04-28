@@ -1,7 +1,6 @@
 package com.Group4.personalAssistant;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,17 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.json.JSONArray;
-
-import java.util.ArrayList;
-
 public class HomePageActivity extends AppCompatActivity {
-    private static final String PREFS_NAME = "schedule_prefs";
-    private static final String SCHEDULE_KEY = "schedule_entries";
-
     private TtsManager ttsManager;
-    private ArrayList<String> scheduleEntries;
-    private SharedPreferences preferences;
 
     private TextView tvGreeting;
     private Button btnNewQuery, btnLogout;
@@ -45,72 +35,30 @@ public class HomePageActivity extends AppCompatActivity {
         }
         tvGreeting.setText("Hello, " + name);
 
-        btnNewQuery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (btnNewQuery != null) {
+            btnNewQuery.setOnClickListener(v -> {
                 Intent intent = new Intent(HomePageActivity.this, VoiceAssistantActivity.class);
                 startActivity(intent);
-            }
-        });
+            });
+        }
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
-            }
-        });
+            });
+        }
 
         ttsManager = new TtsManager(this);
         ttsManager.initialize();
 
-        editTaskText = findViewById(R.id.editTaskText);
-        btnSpeakTask = findViewById(R.id.btnSpeakTask);
-        btnStopSpeech = findViewById(R.id.btnStopSpeech);
-        btnAddEvent = findViewById(R.id.btnAddEvent);
-        btnAddTask = findViewById(R.id.btnAddTask);
-        tvSelectedDate = findViewById(R.id.tvSelectedDate);
-        tvScheduleEmpty = findViewById(R.id.tvScheduleEmpty);
-        scheduleContainer = findViewById(R.id.scheduleContainer);
-        calendarView = findViewById(R.id.calendarView);
-
-        preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        scheduleEntries = new ArrayList<>();
-        loadScheduleEntries();
-        updateScheduleDisplay();
-
-        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            selectedDate.set(Calendar.YEAR, year);
-            selectedDate.set(Calendar.MONTH, month);
-            selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateSelectedDateLabel();
-        });
-
-        btnAddEvent.setOnClickListener(v -> showAddEventDialog());
-        btnAddTask.setOnClickListener(v -> showAddTaskDialog());
-
-        btnSpeakTask.setOnClickListener(v -> {
-            String taskText = editTaskText.getText().toString().trim();
-            if (taskText.isEmpty()) {
-                taskText = getString(R.string.home_page_default_task);
-            }
-
-            if (!ttsManager.isReady()) {
-                Toast.makeText(this, R.string.home_page_tts_not_ready, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            ttsManager.speakTask(getString(R.string.home_page_title), taskText);
-        });
-
-        btnStopSpeech.setOnClickListener(v -> ttsManager.stop());
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         if (bottomNavigationView != null) {
-            bottomNavigationView.setSelectedItemId(R.id.nav_recent);
+            // There is no explicit home in bottom navigation, let's keep nav_recent unselected or nothing selected
+            // bottomNavigationView.setSelectedItemId(R.id.nav_recent);
             bottomNavigationView.setOnItemSelectedListener(item -> {
                 int id = item.getItemId();
                 if (id == R.id.nav_tasks) {
@@ -123,19 +71,12 @@ public class HomePageActivity extends AppCompatActivity {
                     startActivity(new Intent(this, VoiceAssistantActivity.class));
                     return true;
                 } else if (id == R.id.nav_recent) {
+                    // startActivity(new Intent(this, RecentActivity.class));
                     return true;
                 }
                 return false;
             });
         }
-    }
-
-    private void loadScheduleEntries() {
-        String saved = preferences.getString(SCHEDULE_KEY, "");
-        if (saved == null || saved.isEmpty()) {
-            return;
-        }
-        // ... (omitted JSON parsing for simplicity as display logic is removed)
     }
 
     @Override

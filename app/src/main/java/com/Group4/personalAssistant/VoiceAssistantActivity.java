@@ -79,28 +79,39 @@ public class VoiceAssistantActivity extends AppCompatActivity {
     }
 
     private void saveTaskToPrefs(Task task) {
-        android.content.SharedPreferences preferences = getSharedPreferences("schedule_prefs", MODE_PRIVATE);
-        String saved = preferences.getString("schedule_entries", "");
-        ArrayList<String> scheduleEntries = new ArrayList<>();
+        // Save to Calendar preferences
+        saveToSharedPreferences("schedule_prefs", "schedule_entries", task);
+        // Save to Tasks preferences
+        saveToSharedPreferences("tasks_prefs", "tasks_entries", task);
+    }
+
+    private void saveToSharedPreferences(String prefsName, String key, Task task) {
+        android.content.SharedPreferences preferences = getSharedPreferences(prefsName, MODE_PRIVATE);
+        String saved = preferences.getString(key, "");
+        java.util.ArrayList<String> entries = new java.util.ArrayList<>();
+        
         if (saved != null && !saved.isEmpty()) {
             try {
                 org.json.JSONArray array = new org.json.JSONArray(saved);
                 for (int i = 0; i < array.length(); i++) {
-                    scheduleEntries.add(array.getString(i));
+                    entries.add(array.getString(i));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        
+
+        // Create the entry using the shared template
         String entry = getString(R.string.task_entry_template, task.getTitle(), task.getDueDate());
-        scheduleEntries.add(entry);
         
+        // Add new tasks to the top of the list
+        entries.add(0, entry);
+
         org.json.JSONArray array = new org.json.JSONArray();
-        for (String s : scheduleEntries) {
+        for (String s : entries) {
             array.put(s);
         }
-        preferences.edit().putString("schedule_entries", array.toString()).apply();
+        preferences.edit().putString(key, array.toString()).apply();
     }
 
     private void checkPermissionAndStartSpeech() {
@@ -192,12 +203,14 @@ public class VoiceAssistantActivity extends AppCompatActivity {
                                             dueDate.setTime(geminiFormat.parse(dateString));
                                             String formattedDate = appFormat.format(dueDate.getTime());
                                             detectedTask = new Task(title, formattedDate);
-                                            btnAddDetectedTask.setVisibility(View.VISIBLE);
                                         } catch (ParseException e) {
                                             e.printStackTrace();
                                             detectedTask = new Task(title, dateString);
-                                            btnAddDetectedTask.setVisibility(View.VISIBLE);
                                         }
+                                        
+                                        // Automatically save the task
+                                        saveTaskToPrefs(detectedTask);
+                                        Toast.makeText(VoiceAssistantActivity.this, "Task scheduled: " + title, Toast.LENGTH_SHORT).show();
                                     }
 
                                     if (cleanResponse.isEmpty()) {

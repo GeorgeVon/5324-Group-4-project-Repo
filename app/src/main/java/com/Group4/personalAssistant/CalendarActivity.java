@@ -281,10 +281,36 @@ public class CalendarActivity extends AppCompatActivity {
                     title,
                     formatDate(dueDate));
             addScheduleEntry(entry);
+            
+            // Also save to Tasks activity preferences
+            saveToOtherPrefs("tasks_prefs", "tasks_entries", entry);
+            
             dialog.dismiss();
         }));
 
         dialog.show();
+    }
+
+    private void saveToOtherPrefs(String prefsName, String key, String entry) {
+        SharedPreferences otherPrefs = getSharedPreferences(prefsName, MODE_PRIVATE);
+        String saved = otherPrefs.getString(key, "");
+        ArrayList<String> entries = new ArrayList<>();
+        if (saved != null && !saved.isEmpty()) {
+            try {
+                JSONArray array = new JSONArray(saved);
+                for (int i = 0; i < array.length(); i++) {
+                    entries.add(array.getString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        entries.add(0, entry);
+        JSONArray array = new JSONArray();
+        for (String s : entries) {
+            array.put(s);
+        }
+        otherPrefs.edit().putString(key, array.toString()).apply();
     }
 
     private void addScheduleEntry(String entry) {

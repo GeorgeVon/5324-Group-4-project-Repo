@@ -38,9 +38,12 @@ public class GeminiManager {
     }
 
     public void generateResponse(String prompt, GeminiResponseCallback callback) {
+        String currentDate = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(new java.util.Date());
+        String fullPrompt = "Today is " + currentDate + ". " + SYSTEM_PROMPT + prompt;
+        
         // Prefix the prompt with the system instructions
         Content content = new Content.Builder()
-                .addText(SYSTEM_PROMPT + prompt)
+                .addText(fullPrompt)
                 .build();
 
         ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
