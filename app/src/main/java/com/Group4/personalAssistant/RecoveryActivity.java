@@ -2,9 +2,11 @@ package com.Group4.personalAssistant;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,5 +61,29 @@ public class RecoveryActivity extends AppCompatActivity {
                         Toast.makeText(RecoveryActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void showThemeMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.getMenuInflater().inflate(R.menu.theme_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.theme_default) {
+                    ThemeHelper.setTheme(RecoveryActivity.this, R.style.Theme_Group4);
+                } else if (itemId == R.id.theme_dark) {
+                    ThemeHelper.setTheme(RecoveryActivity.this, R.style.Theme_Group4_Dark);
+                } else if (itemId == R.id.theme_midnight) {
+                    ThemeHelper.setTheme(RecoveryActivity.this, R.style.Theme_Group4_Midnight);
+                } else if (itemId == R.id.theme_colorblind) {
+                    ThemeHelper.setTheme(RecoveryActivity.this, R.style.Theme_Group4_ColorBlind);
+                } else if (itemId == R.id.theme_black_and_white) {
+                    ThemeHelper.setTheme(RecoveryActivity.this, R.style.Theme_Group4_BlackAndWhite);
+                }
+                return true;
+            }
+        });
+        popup.show();
     }
 }

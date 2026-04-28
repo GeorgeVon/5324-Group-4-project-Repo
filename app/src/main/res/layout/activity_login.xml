@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login_button"
         android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="18sp"
         android:layout_marginTop="20dp"
         android:backgroundTint="?attr/colorPrimary" />
@@ -108,10 +108,11 @@
         android:layout_height="wrap_content"
         android:text="@string/create_account"
         android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="18sp"
         android:layout_marginTop="5dp"
         android:backgroundTint="?attr/colorPrimary" />
+
     <!-- Forgot Button -->
     <Button
         android:id="@+id/btnForgot"
@@ -120,8 +121,8 @@
         android:layout_gravity="center"
         android:text="@string/forgot_button"
         android:textAllCaps="false"
-        android:layout_marginTop="18sp"
-
-        android:backgroundTint="@color/primary_dark_green" />
+        android:textColor="?attr/colorOnPrimary"
+        android:layout_marginTop="18dp"
+        android:backgroundTint="?attr/colorPrimaryVariant" />
 
 </LinearLayout>
