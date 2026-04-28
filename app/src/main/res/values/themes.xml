@@ -58,4 +58,20 @@
         <item name="customTextColor">@color/black</item>
         <item name="customSecondaryTextColor">@color/cb_primary</item>
     </style>
+
+    <!-- Black and White (Joke) -->
+    <style name="Theme.Group4.BlackAndWhite" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryVariant">#000000</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#000000</item>
+        <item name="colorSecondaryVariant">#000000</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:windowBackground">#FFFFFF</item>
+
+        <item name="customBackgroundColor">#FFFFFF</item>
+        <item name="customTextColor">#000000</item>
+        <item name="customSecondaryTextColor">#000000</item>
+    </style>
 </resources>

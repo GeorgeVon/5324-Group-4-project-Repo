@@ -68,7 +68,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Open Voice Assistant"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="18sp"
                 app:backgroundTint="?attr/colorPrimary"
                 app:cornerRadius="12dp"

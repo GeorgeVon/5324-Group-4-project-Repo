@@ -103,7 +103,7 @@
                     android:layout_weight="1"
                     android:text="@string/add_event_button"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnPrimary"
                     app:backgroundTint="?attr/colorPrimary" />
 
                 <com.google.android.material.button.MaterialButton
@@ -114,7 +114,7 @@
                     android:layout_weight="1"
                     android:text="@string/add_task_button"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnPrimary"
                     app:backgroundTint="?attr/colorPrimaryVariant" />
             </LinearLayout>
 
@@ -180,7 +180,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/speak_task_button"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 app:backgroundTint="?attr/colorPrimary" />
 
             <com.google.android.material.button.MaterialButton
