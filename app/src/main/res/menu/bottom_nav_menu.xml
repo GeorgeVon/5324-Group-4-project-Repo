@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    <item-->
+<!--        android:id="@+id/nav_search"-->
+<!--        android:icon="@android:drawable/ic_menu_search"-->
+<!--        android:title="Search" />-->
+    <item
+        android:id="@+id/nav_tasks"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Tasks" />
+    <item
+        android:id="@+id/nav_recent"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="Recent" />
+    <item
+        android:id="@+id/nav_voice_assistant"
+        android:icon="@android:drawable/ic_btn_speak_now"
+        android:title="Voice Assist" />
+    <item
+        android:id="@+id/nav_calendar"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:title="Calendar" />
+</menu>

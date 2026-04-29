@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
+    android:background="?attr/customBackgroundColor"
     tools:context=".RegisterActivity">
 
     <LinearLayout
@@ -13,13 +13,30 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btnThemes"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Theme Settings"
+                android:onClick="showThemeMenu"
+                android:src="@android:drawable/ic_menu_preferences"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/customSecondaryTextColor" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <!-- App Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/register_page_title"
-            android:textColor="@color/text_grey"
+            android:textColor="?attr/customSecondaryTextColor"
             android:textSize="25sp"
             android:textStyle="bold" />
         <!-- App sub-title -->
@@ -28,13 +45,86 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-
             android:text="@string/register_page_subtitle"
             android:textSize="16sp"
-            android:textColor="@color/text_grey"
+            android:textColor="?attr/customSecondaryTextColor"
             android:layout_marginBottom="24dp"
             android:layout_gravity="center_horizontal"/>
 
+        <!-- Username -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="?attr/customTextColor"
+            app:hintTextColor="?attr/customSecondaryTextColor"
+            app:boxStrokeColor="?attr/customSecondaryTextColor"
+            android:hint="@string/username">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:textColor="?attr/customTextColor"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="?attr/customTextColor"
+            app:hintTextColor="?attr/customSecondaryTextColor"
+            app:boxStrokeColor="?attr/customSecondaryTextColor"
+            android:hint="@string/password"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/customTextColor"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Email -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="?attr/customTextColor"
+            app:hintTextColor="?attr/customSecondaryTextColor"
+            app:boxStrokeColor="?attr/customSecondaryTextColor"
+            android:hint="@string/email"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:inputType="textEmailAddress"
+                android:textColor="?attr/customTextColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Phone -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="?attr/customTextColor"
+            app:hintTextColor="?attr/customSecondaryTextColor"
+            app:boxStrokeColor="?attr/customSecondaryTextColor"
+            android:hint="@string/phone_number"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone"
+                android:inputType="phone"
+                android:textColor="?attr/customTextColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Done Button -->
         <com.google.android.material.button.MaterialButton
@@ -46,7 +136,8 @@
             android:layout_marginTop="24dp"
             android:padding="12dp"
             app:cornerRadius="12dp"
-            android:backgroundTint="@color/primary_green"/>
+            android:textColor="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary"/>
 
         <!-- Back Button -->
         <Button
@@ -56,7 +147,8 @@
             android:text="@string/back_to_login"
             android:textAllCaps="false"
             android:layout_marginTop="12dp"
-            android:backgroundTint="@color/primary_green"
+            android:textColor="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary"
             app:cornerRadius="12dp"/>
     </LinearLayout>
 

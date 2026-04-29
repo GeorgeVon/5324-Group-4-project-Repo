@@ -4,13 +4,15 @@
     <string name="landing_title">Welcome to Your Assistant</string>
     <string name="landing_subtitle">Your daily tasks, organized and simplified.</string>
     <string name="get_started">Get Started</string>
+
     <!--Login Page-->
     <string name="main_title">Personal Assistant Login</string>
     <string name="login_button">Login</string>
     <string name="create_account">Register</string>
     <string name="forgot_button">Forgot Username/Password</string>
+
     <!--Home Page-->
-    <string name="home_page_title">HOME PAGE</string>
+    <string name="home_page_title">Home Page</string>
     <string name="home_page_subtitle">Enter a task below and have it read aloud.</string>
     <string name="home_page_task_hint">Task description</string>
     <string name="speak_task_button">Read Task</string>
@@ -23,6 +25,24 @@
     <string name="schedule_header">My Events &amp; Tasks</string>
     <string name="no_schedule_items">No events or tasks yet. Tap Add Event or Add Task to get started.</string>
     <string name="speak_task_section_title">Read Aloud a Task</string>
+
+    <!-- Task Page -->
+    <string name="task_header">My Tasks</string>
+    <string name="task_subtitle">Enter a task below and have it read aloud.</string>
+    <string name="task_hint">Task description</string>
+    <string name="task_button">Read Task</string>
+    <string name="default_task">Todays task is to review your schedule and plan the next priority.</string>
+    <string name="no_task_items">No tasks yet. Tap Add Task to get started.</string>
+    <string name="task_title">Task</string>
+    <string name="task_title_hint">Task title</string>
+    <string name="add_task_title">Add Task</string>
+    <string name="untitled_task">Untitled Task</string>
+    <string name="task_entry_template">Task: %1$s\nDue: %2$s</string>
+    <string name="task_due_date_label">Due date</string>
+    <string name="pick_due_date_button">Pick due date</string>
+
+    <!-- Calendar Page -->
+    <string name="calendar_title">My Calendar</string>
     <string name="event_title_hint">Event title</string>
     <string name="event_notes_hint">Event notes (optional)</string>
     <string name="event_time_label">Event time</string>
@@ -31,17 +51,25 @@
     <string name="untitled_event">Untitled Event</string>
     <string name="no_notes_text">No additional notes.</string>
     <string name="event_entry_template">Event: %1$s\nDate: %2$s\nTime: %3$s\nNotes: %4$s</string>
-    <string name="task_title_hint">Task title</string>
-    <string name="task_due_date_label">Due date</string>
-    <string name="pick_due_date_button">Pick due date</string>
-    <string name="add_task_title">Add Task</string>
-    <string name="untitled_task">Untitled Task</string>
-    <string name="task_entry_template">Task: %1$s\nDue: %2$s</string>
+
     <!--Register Page -->
     <string name="register_page_title">Personal Assistant Registration</string>
     <string name="register_page_subtitle">Create an Account to begin</string>
     <string name="create_account_button">create account</string>
     <string name="back_to_login">back to login</string>
+    <string name="username">Username</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="phone_number">phone number</string>
+
+    <!--Recovery Page -->
+    <string name="recovery_page_title">User Account Recovery</string>
+    <string name="reset_username_button">Reset Username</string>
+    <string name="reset_password_button">Reset Password</string>
+    <string name="forgot">Forgot Username/Password</string>
 
     <string name="back_to_main">Back to Main Page</string>
+    <string name="user_label">You: %1$s</string>
+    <string name="gemini_label">Gemini: %1$s</string>
+    <string name="gemini_error">Gemini Error: %1$s</string>
 </resources>
