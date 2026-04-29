@@ -122,17 +122,24 @@ public class CalendarActivity extends AppCompatActivity {
 
         if (btnSpeakTask != null) {
             btnSpeakTask.setOnClickListener(v -> {
-                String taskText = editTaskText.getText().toString().trim();
-                if (taskText.isEmpty()) {
-                    taskText = getString(R.string.home_page_default_task);
-                }
-
                 if (!ttsManager.isReady()) {
                     Toast.makeText(this, R.string.home_page_tts_not_ready, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                ttsManager.speakTask(getString(R.string.home_page_title), taskText);
+                String scheduleToRead = "";
+                if (scheduleEntries.isEmpty()) {
+                    scheduleToRead = "You have no events or tasks scheduled.";
+                } else {
+                    StringBuilder sb = new StringBuilder("You have " + scheduleEntries.size() + " items scheduled. ");
+                    for (int i = 0; i < scheduleEntries.size(); i++) {
+                        String entry = scheduleEntries.get(i).replace("\n", ". ");
+                        sb.append("Item ").append(i + 1).append(": ").append(entry).append(". ");
+                    }
+                    scheduleToRead = sb.toString();
+                }
+
+                ttsManager.speakTask(getString(R.string.home_page_title), scheduleToRead);
             });
         }
 
@@ -281,10 +288,36 @@ public class CalendarActivity extends AppCompatActivity {
                     title,
                     formatDate(dueDate));
             addScheduleEntry(entry);
+            
+            // Also save to Tasks activity preferences
+            saveToOtherPrefs("tasks_prefs", "tasks_entries", entry);
+            
             dialog.dismiss();
         }));
 
         dialog.show();
+    }
+
+    private void saveToOtherPrefs(String prefsName, String key, String entry) {
+        SharedPreferences otherPrefs = getSharedPreferences(prefsName, MODE_PRIVATE);
+        String saved = otherPrefs.getString(key, "");
+        ArrayList<String> entries = new ArrayList<>();
+        if (saved != null && !saved.isEmpty()) {
+            try {
+                JSONArray array = new JSONArray(saved);
+                for (int i = 0; i < array.length(); i++) {
+                    entries.add(array.getString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        entries.add(0, entry);
+        JSONArray array = new JSONArray();
+        for (String s : entries) {
+            array.put(s);
+        }
+        otherPrefs.edit().putString(key, array.toString()).apply();
     }
 
     private void addScheduleEntry(String entry) {
@@ -303,18 +336,67 @@ public class CalendarActivity extends AppCompatActivity {
 
         if (tvScheduleEmpty != null) tvScheduleEmpty.setVisibility(TextView.GONE);
         for (String entry : scheduleEntries) {
-            TextView itemView = new TextView(this);
-            itemView.setText(entry);
-            itemView.setTextColor(getResources().getColor(R.color.primary_dark_green, getTheme()));
-            itemView.setTextSize(14f);
-            itemView.setPadding(18, 16, 18, 16);
-            itemView.setBackgroundResource(R.drawable.schedule_item_background);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            LinearLayout itemLayout = new LinearLayout(this);
+            itemLayout.setOrientation(LinearLayout.HORIZONTAL);
+            itemLayout.setBackgroundResource(R.drawable.schedule_item_background);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 0, 0, 12);
-            itemView.setLayoutParams(params);
-            scheduleContainer.addView(itemView);
+            layoutParams.setMargins(0, 0, 0, 12);
+            itemLayout.setLayoutParams(layoutParams);
+
+            TextView itemView = new TextView(this);
+            itemView.setText(entry);
+            
+            android.util.TypedValue typedValueText = new android.util.TypedValue();
+            getTheme().resolveAttribute(R.attr.customSecondaryTextColor, typedValueText, true);
+            itemView.setTextColor(typedValueText.data);
+
+            itemView.setTextSize(14f);
+            itemView.setPadding(18, 16, 18, 16);
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            itemView.setLayoutParams(textParams);
+
+            Button btnComplete = new Button(this);
+            btnComplete.setText("Done");
+            btnComplete.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+
+            // Get themed color
+            android.util.TypedValue typedValue = new android.util.TypedValue();
+            getTheme().resolveAttribute(R.attr.customSecondaryTextColor, typedValue, true);
+            btnComplete.setTextColor(typedValue.data);
+
+            btnComplete.setOnClickListener(v -> {
+                scheduleEntries.remove(entry);
+                removeFromOtherPrefs("tasks_prefs", "tasks_entries", entry);
+                updateScheduleDisplay();
+                saveScheduleEntries();
+            });
+
+            itemLayout.addView(itemView);
+            itemLayout.addView(btnComplete);
+
+            scheduleContainer.addView(itemLayout);
+        }
+    }
+
+    private void removeFromOtherPrefs(String prefsName, String key, String entryToRemove) {
+        SharedPreferences otherPrefs = getSharedPreferences(prefsName, MODE_PRIVATE);
+        String saved = otherPrefs.getString(key, "");
+        if (saved != null && !saved.isEmpty()) {
+            try {
+                JSONArray array = new JSONArray(saved);
+                JSONArray newArray = new JSONArray();
+                for (int i = 0; i < array.length(); i++) {
+                    String item = array.getString(i);
+                    if (!item.equals(entryToRemove)) {
+                        newArray.put(item);
+                    }
+                }
+                otherPrefs.edit().putString(key, newArray.toString()).apply();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -373,6 +455,8 @@ public class CalendarActivity extends AppCompatActivity {
                     ThemeHelper.setTheme(CalendarActivity.this, R.style.Theme_Group4_Midnight);
                 } else if (itemId == R.id.theme_colorblind) {
                     ThemeHelper.setTheme(CalendarActivity.this, R.style.Theme_Group4_ColorBlind);
+                } else if (itemId == R.id.theme_black_and_white) {
+                    ThemeHelper.setTheme(CalendarActivity.this, R.style.Theme_Group4_BlackAndWhite);
                 }
                 return true;
             }

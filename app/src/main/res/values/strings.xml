@@ -66,4 +66,7 @@
 
 
     <string name="back_to_main">Back to Main Page</string>
+    <string name="user_label">You: %1$s</string>
+    <string name="gemini_label">Gemini: %1$s</string>
+    <string name="gemini_error">Gemini Error: %1$s</string>
 </resources>

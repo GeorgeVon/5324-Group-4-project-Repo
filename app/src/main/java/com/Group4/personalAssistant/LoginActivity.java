@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
                     ThemeHelper.setTheme(LoginActivity.this, R.style.Theme_Group4_Midnight);
                 } else if (itemId == R.id.theme_colorblind) {
                     ThemeHelper.setTheme(LoginActivity.this, R.style.Theme_Group4_ColorBlind);
+                } else if (itemId == R.id.theme_black_and_white) {
+                    ThemeHelper.setTheme(LoginActivity.this, R.style.Theme_Group4_BlackAndWhite);
                 }
                 return true;
             }

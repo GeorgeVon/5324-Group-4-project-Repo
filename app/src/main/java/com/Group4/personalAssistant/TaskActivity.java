@@ -73,17 +73,24 @@ public class TaskActivity extends AppCompatActivity {
         }
 
         btnSpeakTask.setOnClickListener(v -> {
-            String taskText = editTaskText.getText().toString().trim();
-            if (taskText.isEmpty()) {
-                taskText = getString(R.string.default_task);
-            }
-
             if (!ttsManager.isReady()) {
                 Toast.makeText(this, R.string.home_page_tts_not_ready, Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            ttsManager.speakTask(getString(R.string.task_title), taskText);
+            String tasksToRead = "";
+            if (taskEntries.isEmpty()) {
+                tasksToRead = "You have no tasks currently.";
+            } else {
+                StringBuilder sb = new StringBuilder("You have " + taskEntries.size() + " tasks. ");
+                for (int i = 0; i < taskEntries.size(); i++) {
+                    String entry = taskEntries.get(i).replace("\n", ". ");
+                    sb.append("Task ").append(i + 1).append(": ").append(entry).append(". ");
+                }
+                tasksToRead = sb.toString();
+            }
+
+            ttsManager.speakTask(getString(R.string.task_title), tasksToRead);
         });
 
         btnStopSpeech.setOnClickListener(v -> ttsManager.stop());
@@ -200,6 +207,8 @@ public class TaskActivity extends AppCompatActivity {
                 }
             } else {
                 taskEntries.add(0, entry);
+                // Also save to Calendar preferences for new tasks
+                saveToOtherPrefs("schedule_prefs", "schedule_entries", entry);
             }
             
             updateTaskDisplay(taskEntries);
@@ -208,6 +217,28 @@ public class TaskActivity extends AppCompatActivity {
         }));
 
         dialog.show();
+    }
+
+    private void saveToOtherPrefs(String prefsName, String key, String entry) {
+        SharedPreferences otherPrefs = getSharedPreferences(prefsName, MODE_PRIVATE);
+        String saved = otherPrefs.getString(key, "");
+        ArrayList<String> entries = new ArrayList<>();
+        if (saved != null && !saved.isEmpty()) {
+            try {
+                JSONArray array = new JSONArray(saved);
+                for (int i = 0; i < array.length(); i++) {
+                    entries.add(array.getString(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        entries.add(0, entry);
+        JSONArray array = new JSONArray();
+        for (String s : entries) {
+            array.put(s);
+        }
+        otherPrefs.edit().putString(key, array.toString()).apply();
     }
 
     private void updateTaskDisplay(ArrayList<String> listToDisplay) {
@@ -220,28 +251,72 @@ public class TaskActivity extends AppCompatActivity {
         tvTaskEmpty.setVisibility(TextView.GONE);
         for (int i = 0; i < listToDisplay.size(); i++) {
             final String entry = listToDisplay.get(i);
-            TextView itemView = new TextView(this);
-            itemView.setText(entry);
-            itemView.setTextColor(getResources().getColor(R.color.primary_dark_green, getTheme()));
-            itemView.setTextSize(14f);
-            itemView.setPadding(18, 16, 18, 16);
-            itemView.setBackgroundResource(R.drawable.schedule_item_background);
             
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            LinearLayout itemLayout = new LinearLayout(this);
+            itemLayout.setOrientation(LinearLayout.HORIZONTAL);
+            itemLayout.setBackgroundResource(R.drawable.schedule_item_background);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 0, 0, 12);
-            itemView.setLayoutParams(params);
+            layoutParams.setMargins(0, 0, 0, 12);
+            itemLayout.setLayoutParams(layoutParams);
+
+            TextView itemView = new TextView(this);
+            itemView.setText(entry);
+            
+            android.util.TypedValue typedValueText = new android.util.TypedValue();
+            getTheme().resolveAttribute(R.attr.customSecondaryTextColor, typedValueText, true);
+            itemView.setTextColor(typedValueText.data);
+
+            itemView.setTextSize(14f);
+            itemView.setPadding(18, 16, 18, 16);
+            
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            itemView.setLayoutParams(textParams);
 
             // Simple click to edit
             itemView.setOnClickListener(v -> showAddTaskDialog(entry));
 
-            itemView.setOnLongClickListener(v -> {
-                showDeleteDialog(entry);
-                return true;
+            Button btnComplete = new Button(this);
+            btnComplete.setText("Done");
+            btnComplete.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+            
+            // Get themed color
+            android.util.TypedValue typedValue = new android.util.TypedValue();
+            getTheme().resolveAttribute(R.attr.customSecondaryTextColor, typedValue, true);
+            btnComplete.setTextColor(typedValue.data);
+
+            btnComplete.setOnClickListener(v -> {
+                taskEntries.remove(entry);
+                removeFromOtherPrefs("schedule_prefs", "schedule_entries", entry);
+                updateTaskDisplay(taskEntries);
+                saveTaskEntries();
             });
 
-            taskContainer.addView(itemView);
+            itemLayout.addView(itemView);
+            itemLayout.addView(btnComplete);
+
+            taskContainer.addView(itemLayout);
+        }
+    }
+
+    private void removeFromOtherPrefs(String prefsName, String key, String entryToRemove) {
+        SharedPreferences otherPrefs = getSharedPreferences(prefsName, MODE_PRIVATE);
+        String saved = otherPrefs.getString(key, "");
+        if (saved != null && !saved.isEmpty()) {
+            try {
+                JSONArray array = new JSONArray(saved);
+                JSONArray newArray = new JSONArray();
+                for (int i = 0; i < array.length(); i++) {
+                    String item = array.getString(i);
+                    if (!item.equals(entryToRemove)) {
+                        newArray.put(item);
+                    }
+                }
+                otherPrefs.edit().putString(key, newArray.toString()).apply();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

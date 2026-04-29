@@ -9,15 +9,16 @@
     tools:context=".VoiceAssistantActivity">
 
     <ImageButton
-        android:id="@+id/btnBack"
+        android:id="@+id/btnBackToHome"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Back"
+        android:contentDescription="Back to Home"
         android:src="@android:drawable/ic_menu_revert"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/customSecondaryTextColor" />
+        app:tint="?attr/customSecondaryTextColor"
+        tools:ignore="HardcodedText,ImageContrastCheck" />
 
     <TextView
         android:id="@+id/tvVoiceTitle"
@@ -63,6 +64,17 @@
         </ScrollView>
     </androidx.cardview.widget.CardView>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddDetectedTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Add Task to Calendar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/btnMic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnMic"
         android:layout_width="wrap_content"
@@ -75,7 +87,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/white" />
+        app:tint="?attr/colorOnPrimary" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/btnMic"
+        app:layout_constraintEnd_toEndOf="@id/btnMic"
+        app:layout_constraintStart_toStartOf="@id/btnMic"
+        app:layout_constraintTop_toTopOf="@id/btnMic" />
 
     <TextView
         android:layout_width="wrap_content"
