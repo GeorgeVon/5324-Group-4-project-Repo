@@ -10,5 +10,4 @@ import org.junit.runners.Suite;
     CalendarTest.class
 })
 public class AllTestsSuite {
-    // This class remains empty, used only as a holder for the above annotations
 }

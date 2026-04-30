@@ -36,7 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
         phone = findViewById(R.id.phone);
 
         //BUTTON FUNCTIONALITY
-        //done button
         btnDone = findViewById(R.id.btnDone);
         btnDone.setOnClickListener(v -> validateAndRegister());
 
