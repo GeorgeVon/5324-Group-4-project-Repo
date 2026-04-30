@@ -1,77 +1,40 @@
-# 5324 Group 4 - AI Personal Assistant App
+# CSE 5324 Group 4 - AI Personal Assistant App
 
-# Development Workflow Notes
+This guide is a step-by-step instructions on how to open, build, and run the Personal Assistant application using Android Studio.
 
-Make sure to work from your own branch. If you’re already familiar with the process, feel free to follow your usual workflow. If not, no worries! Use the steps below as a quick reference to get started 🙂
-
----
-
-## Working on the Correct Branch
-
-Check your current branch:
-
-```bash
-git branch
-```
-
-Switch to your branch:
-
-```bash
-git checkout your-branch-name
-```
-
-Create it if needed:
-
-```bash
-git checkout -b your-branch-name
-```
+## Pre-reqs
+- **Android Studio** (Latest stable version recommended).
+- **Android SDK** (API 34) installed via the SDK Manager.
+- An **Android Emulator** or a physical device with **USB Debugging** enabled.
 
 ---
 
-## Making and Committing Changes
+## Step-by-Step Instructions
 
-Review changes:
+### 1. Launch Android Studio
+Open the Android Studio application on your computer.
 
-```bash
-git status
-```
+### 2. Open the Project
+1. On the **Welcome to Android Studio** window, click **Open**.
+2. Navigate to the project directory: `.../AI_assistant_app`.
+3. Select the root folder (`AI_assistant_app`) and click **OK**.
 
-Stage files:
+### 3. Wait for Gradle to Sync
+Android Studio will automatically start syncing the project. Once a "Build Succesful" message is
+received at the bottom of the screen, continue to step 4. 
 
-```bash
-git add .
-```
+### 4. Select a Run Device
+In the top toolbar, locate the device dropdown menu (next to the Run button).
+- Select your physical device or an emulator from the list.
 
-Commit:
+### 5. Build and Run the App
+1. Verify the run configuration dropdown (next to the device selector) is set to **app**.
+2. Click the **Run** button (green "Play" icon) in the toolbar, or press `Shift + F10`.
+3. The app will build, install, and launch automatically on your selected device.
 
-```bash
-git commit -m "Describe your changes"
-```
-
----
-
-## Before Pushing
-
-Before pushing, confirm:
-
-* The project builds successfully
-* The application runs without errors
-* Your changes behave as expected
-
----
-
-## Pushing Changes
-
-```bash
-git push origin your-branch-name
-```
-
----
-
-## Summary
-
-* Work on your own branch
-* Commit only after verifying your changes
-* Push only when the project builds and runs cleanly
-
-Keeping changes stable before pushing helps avoid issues for others working on the project.
+### 6. Running Unit Tests
+To execute the automated tests:
+1. Open the **Project** tool window on the left.
+2. Navigate to `app > src > test > java > com.Group4.personalAssistant`.
+3. Right-click on `AllTestsSuite.java`.
+4. Select **Run 'AllTestsSuite'**.
