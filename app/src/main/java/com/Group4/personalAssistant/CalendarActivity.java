@@ -424,11 +424,11 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
-    private String formatDate(Calendar date) {
+    static String formatDate(Calendar date) {
         return new SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault()).format(date.getTime());
     }
 
-    private String formatTime(Calendar time) {
+    static String formatTime(Calendar time) {
         return new SimpleDateFormat("h:mm a", Locale.getDefault()).format(time.getTime());
     }
 
